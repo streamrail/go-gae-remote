@@ -7,13 +7,13 @@ to app engine.
 
 ## Getting Started
 
-#run the app:
+###run the app:
 
 ``` bash
 goapp run *.go
 ```
 
-#config values:
+###config values:
 
 main.go
 
@@ -26,13 +26,13 @@ var (
 )
 ```
 
-#write queries
+###write queries
 
 use queries.go to write queries and model.go to declare entity types that you are storing on datastore.
 
 two examples are implemented as getAppStats (dsInfo.go) and getData (queries.go).
 
-# License 
+## License 
 2014 StreamRail all rights reserved
 
 
