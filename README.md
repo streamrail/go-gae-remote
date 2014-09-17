@@ -30,10 +30,54 @@ var (
 
 use queries.go to write queries and model.go to declare entity types that you are storing on datastore.
 
-two examples are implemented as getAppStats (dsInfo.go) and getData (queries.go).
+#### examples
+
+two examples are implemented as getAppStats (dsInfo.go) - taken from a Google example, and getData (queries.go).
+
+###Fetch limitation issue workaround
+
+The app works around a known issue, following advise from [willhorn](https://groups.google.com/forum/#!topic/google-appengine-go/fA0NptlpHNE) of GAE Remote API that does not allow you to fetch large quantities of entities by using iterators in a loop (see queries.go):
+
+```go
+
+var i int
+t := q.Limit(100).Run(c)
+var entities []MyEntityKind
+for readBatch(&i, t, &entities) {
+	cursor, err := t.Cursor()
+	if err != nil {
+		c.Errorf("error getting cursor: %v", err)
+		return nil
+	}
+	t = q.Limit(100).Start(cursor).Run(c)
+}
+
+func readBatch(i *int, t *datastore.Iterator, entities *[]MyEntityKind) bool {
+	start := *i
+	for {
+		var entity MyEntityKind
+		key, err := t.Next(&entity)
+		*entities = append(*entities, entity)
+		fmt.Printf("read entity: %v\n", key)
+		if err == datastore.Done {
+			if start == *i {
+				return false
+			}
+			return true
+		}
+		if err != nil {
+			log.Fatalf("error fetching next record: %v", err)
+			return false
+		}
+		*i++
+	}
+}
+
+```
 
 ## License 
-2014 StreamRail all rights reserved
+The MIT License (MIT)
+Copyright (c) StreamRail 2014
 
 
 
