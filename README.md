@@ -26,15 +26,15 @@ var (
 )
 ```
 
-###write queries
+### write queries
 
 use queries.go to write queries and model.go to declare entity types that you are storing on datastore.
 
-#### examples
+### examples
 
 two examples are implemented as getAppStats (dsInfo.go) - taken from a Google example, and getData (queries.go).
 
-###Fetch limitation issue workaround
+### Fetch limitation issue workaround
 
 The app works around a known issue, following advise from [willhorn](https://groups.google.com/forum/#!topic/google-appengine-go/fA0NptlpHNE) of GAE Remote API that does not allow you to fetch large quantities of entities by using iterators in a loop (see queries.go):
 
